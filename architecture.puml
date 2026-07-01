@@ -1,35 +1,39 @@
 @startuml
-!define RECTANGLE class
-
+' Define visual style
 skinparam componentStyle uml2
+skinparam backgroundColor #FDFDFD
+skinparam shadowing false
 
-actor "User (Browser)" as user
+' Actors
+actor "Browser User" as browserUser
+actor "Android User" as androidUser
 
-node "Docker Compose Environment" {
-  component "Nginx" as nginx {
-    artifact "Web Frontend (HTML/JS)" as frontend
-    artifact "WASM SSH/SFTP Client" as wasm
-  }
-
-  component "Proxy (Golang)" as proxy
-  
-  component "Prometheus" as prometheus
-  component "Grafana" as grafana
-  
-  component "Test SSHD Container" as testsshd
+' External reverse proxy (NGINX Proxy Manager)
+node "NGINX Proxy Manager" as nginxProxy {
+    component "NGINX (SSL Termination)" as nginx
 }
 
-node "Target Environment" {
-  component "Target SSH Server" as target_ssh
+' Docker Compose environment
+node "Docker Compose Environment" as dockerEnv {
+    component "Frontend (React/Vite)" as frontend
+    component "Backend API (Express)" as backend
+    database "MySQL DB" as mysql
+    component "Docker Socket" as dockerSock << (C,orchid) >>
+    component "File Storage (Volume)" as storage
 }
 
-user --> frontend : HTTP/HTTPS
-user --> wasm : Downloads WASM
-wasm --> proxy : WebSocket (tunnels TCP)
+' Relationships
+browserUser --> nginx : HTTPS/HTTP
+androidUser --> nginx : HTTPS/HTTP
+nginx --> frontend : Proxy static assets
+nginx --> backend : Proxy /api
+frontend --> backend : REST API calls
+backend --> mysql : SQL queries
+backend --> dockerSock : Docker control (admin UI)
+backend --> storage : Store/retrieve photos
+androidUser --> backend : REST API (photo upload, location sync)
 
-proxy --> target_ssh : TCP (SSH/SFTP connections)
-proxy --> testsshd : TCP (SSH/SFTP testing connections)
-
-prometheus --> proxy : Scrapes metrics
-grafana --> prometheus : Queries metrics
+' Planned external services
+cloud "Object Storage (S3)" as s3
+backend --> s3 : Store photos (planned)
 @enduml
