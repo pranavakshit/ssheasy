@@ -1,0 +1,35 @@
+@startuml
+!define RECTANGLE class
+
+skinparam componentStyle uml2
+
+actor "User (Browser)" as user
+
+node "Docker Compose Environment" {
+  component "Nginx" as nginx {
+    artifact "Web Frontend (HTML/JS)" as frontend
+    artifact "WASM SSH/SFTP Client" as wasm
+  }
+
+  component "Proxy (Golang)" as proxy
+  
+  component "Prometheus" as prometheus
+  component "Grafana" as grafana
+  
+  component "Test SSHD Container" as testsshd
+}
+
+node "Target Environment" {
+  component "Target SSH Server" as target_ssh
+}
+
+user --> frontend : HTTP/HTTPS
+user --> wasm : Downloads WASM
+wasm --> proxy : WebSocket (tunnels TCP)
+
+proxy --> target_ssh : TCP (SSH/SFTP connections)
+proxy --> testsshd : TCP (SSH/SFTP testing connections)
+
+prometheus --> proxy : Scrapes metrics
+grafana --> prometheus : Queries metrics
+@enduml
