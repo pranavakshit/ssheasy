@@ -1,2 +1,4 @@
 grafana/data/
 prometheus/data/
+.vscode/
+key/

@@ -1,0 +1,124 @@
+<Window x:Class="SSHEasyApp.Dialogs.ProfileDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Connection Profile"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        SizeToContent="Height"
+        Width="500"
+        Background="{StaticResource BgSurface}"
+        Foreground="{StaticResource FgDefault}"
+        FontFamily="Segoe UI Variable, Segoe UI"
+        FontSize="13"
+        ShowInTaskbar="False"
+        WindowStyle="None"
+        AllowsTransparency="True">
+
+    <Border CornerRadius="12" Background="{StaticResource BgSurface}"
+            BorderBrush="{StaticResource BorderSubtle}" BorderThickness="1">
+        <Grid Margin="28,24,28,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>  <!-- Title -->
+                <RowDefinition Height="16"/>    <!-- Spacer -->
+                <RowDefinition Height="Auto"/>  <!-- Name -->
+                <RowDefinition Height="14"/>
+                <RowDefinition Height="Auto"/>  <!-- Host + Port -->
+                <RowDefinition Height="14"/>
+                <RowDefinition Height="Auto"/>  <!-- Username -->
+                <RowDefinition Height="14"/>
+                <RowDefinition Height="Auto"/>  <!-- Auth method -->
+                <RowDefinition Height="14"/>
+                <RowDefinition Height="Auto"/>  <!-- Password / Key Path -->
+                <RowDefinition Height="14"/>
+                <RowDefinition Height="Auto"/>  <!-- Passphrase -->
+                <RowDefinition Height="24"/>
+                <RowDefinition Height="Auto"/>  <!-- Buttons -->
+            </Grid.RowDefinitions>
+
+            <!-- Title Bar -->
+            <DockPanel Grid.Row="0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <TextBlock Text="Connection Profile" FontSize="16" FontWeight="SemiBold"
+                           Foreground="{StaticResource FgDefault}" VerticalAlignment="Center"/>
+                <Button DockPanel.Dock="Right" Content="✕" Style="{StaticResource IconButton}"
+                        Click="Cancel_Click" HorizontalAlignment="Right" FontSize="14"/>
+            </DockPanel>
+
+            <!-- Profile Name -->
+            <StackPanel Grid.Row="2">
+                <TextBlock Text="PROFILE NAME" Style="{StaticResource FieldLabel}"/>
+                <TextBox x:Name="NameBox" Style="{StaticResource DarkTextBox}"
+                         Text="Ubuntu VM"/>
+            </StackPanel>
+
+            <!-- Host + Port -->
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="HOST / IP" Style="{StaticResource FieldLabel}"/>
+                    <TextBox x:Name="HostBox" Style="{StaticResource DarkTextBox}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="PORT" Style="{StaticResource FieldLabel}"/>
+                    <TextBox x:Name="PortBox" Style="{StaticResource DarkTextBox}" Text="22"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Username -->
+            <StackPanel Grid.Row="6">
+                <TextBlock Text="USERNAME" Style="{StaticResource FieldLabel}"/>
+                <TextBox x:Name="UsernameBox" Style="{StaticResource DarkTextBox}"/>
+            </StackPanel>
+
+            <!-- Auth Method -->
+            <StackPanel Grid.Row="8">
+                <TextBlock Text="AUTHENTICATION" Style="{StaticResource FieldLabel}"/>
+                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                    <RadioButton x:Name="PasswordRadio" Content="Password" Foreground="{StaticResource FgMuted}"
+                                 GroupName="AuthMethod" Margin="0,0,20,0"
+                                 Checked="AuthMethod_Changed" Unchecked="AuthMethod_Changed"/>
+                    <RadioButton x:Name="KeyRadio" Content="Private Key" Foreground="{StaticResource FgMuted}"
+                                 GroupName="AuthMethod" IsChecked="True"
+                                 Checked="AuthMethod_Changed" Unchecked="AuthMethod_Changed"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Password / Key Path -->
+            <StackPanel Grid.Row="10" x:Name="PasswordPanel" Visibility="Collapsed">
+                <TextBlock Text="PASSWORD" Style="{StaticResource FieldLabel}"/>
+                <PasswordBox x:Name="PasswordBox" Style="{StaticResource DarkPasswordBox}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="10" x:Name="KeyPanel">
+                <TextBlock Text="PRIVATE KEY FILE" Style="{StaticResource FieldLabel}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="KeyPathBox" Style="{StaticResource DarkTextBox}" Grid.Column="0"/>
+                    <Button Grid.Column="2" Content="Browse…" Style="{StaticResource GhostButton}"
+                            Click="BrowseKey_Click" VerticalAlignment="Bottom"/>
+                </Grid>
+            </StackPanel>
+
+            <!-- Passphrase -->
+            <StackPanel Grid.Row="12" x:Name="PassphrasePanel">
+                <TextBlock Text="KEY PASSPHRASE (if encrypted)" Style="{StaticResource FieldLabel}"/>
+                <PasswordBox x:Name="PassphraseBox" Style="{StaticResource DarkPasswordBox}"/>
+            </StackPanel>
+
+            <!-- Buttons -->
+            <StackPanel Grid.Row="14" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Cancel" Style="{StaticResource GhostButton}" Click="Cancel_Click"
+                        Margin="0,0,10,0" MinWidth="80"/>
+                <Button Content="Save" Style="{StaticResource PrimaryButton}" Click="Save_Click"
+                        MinWidth="100"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

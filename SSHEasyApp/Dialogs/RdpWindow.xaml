@@ -1,0 +1,49 @@
+<Window x:Class="SSHEasyApp.Dialogs.RdpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:SSHEasyApp.Controls"
+        Title="Remote Desktop" Height="720" Width="1080"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BgDeep}"
+        Foreground="{StaticResource FgDefault}"
+        FontFamily="Segoe UI Variable, Segoe UI">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header / Toolbar -->
+        <Border Grid.Row="0" Background="{StaticResource BgSurface}" 
+                BorderBrush="{StaticResource BorderSubtle}" BorderThickness="0,0,0,1" Padding="16,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Remote Desktop Session" FontWeight="SemiBold" 
+                               Foreground="{StaticResource FgDefault}" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+                
+                <Button x:Name="StopRdpButton" Grid.Column="1" Content="Stop RDP" 
+                        Style="{StaticResource DangerButton}" Click="StopRdp_Click"/>
+            </Grid>
+        </Border>
+        
+        <!-- Content Area -->
+        <Grid Grid.Row="1">
+            <!-- Loading State -->
+            <StackPanel x:Name="LoadingPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible">
+                <ProgressBar IsIndeterminate="True" Width="200" Height="4" Margin="0,0,0,16" Foreground="{StaticResource Accent}"/>
+                <TextBlock x:Name="LoadingText" Text="Starting XRDP and configuring tunnel..." 
+                           Foreground="{StaticResource FgMuted}" HorizontalAlignment="Center" FontSize="14"/>
+            </StackPanel>
+            
+            <!-- Embedded RDP Host -->
+            <controls:MstscHost x:Name="RdpHost" Visibility="Collapsed" Margin="0"/>
+        </Grid>
+    </Grid>
+</Window>
