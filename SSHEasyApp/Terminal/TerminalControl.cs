@@ -483,7 +483,7 @@ public class TerminalControl : FrameworkElement
 
     public (int cols, int rows) GetTerminalSize()
     {
-        if (_charWidth <= 0 || _charHeight <= 0)
+        if (_charWidth <= 0 || _charHeight <= 0 || ActualWidth <= 0 || ActualHeight <= 0)
             return (80, 24);
         return (
             Math.Max(1, (int)(ActualWidth / _charWidth)),

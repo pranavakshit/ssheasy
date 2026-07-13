@@ -90,7 +90,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             
             <!-- Top Bar -->
@@ -143,26 +142,6 @@
                     
                     <!-- The actual terminal control -->
                     <terminal:TerminalControl x:Name="Terminal" Visibility="Collapsed" Margin="4"/>
-                </Grid>
-            </Border>
-            
-            <!-- Terminal Input Line -->
-            <Border Grid.Row="2" Background="{StaticResource BgSurface}" 
-                    BorderBrush="{StaticResource BorderSubtle}" BorderThickness="0,1,0,0" Padding="8"
-                    x:Name="TerminalInputContainer" Visibility="Collapsed">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBox x:Name="TerminalInputBox" Grid.Column="0" 
-                             Background="{StaticResource BgDeep}" Foreground="{StaticResource FgDefault}"
-                             BorderBrush="{StaticResource BorderSubtle}" BorderThickness="1"
-                             Padding="8,6" FontSize="14" FontFamily="Consolas"
-                             KeyDown="TerminalInputBox_KeyDown"/>
-                    <Button x:Name="TerminalSendButton" Grid.Column="1" Content="Send" 
-                            Style="{StaticResource PrimaryButton}" Margin="8,0,0,0" Padding="16,0"
-                            Click="TerminalSendButton_Click"/>
                 </Grid>
             </Border>
         </Grid>

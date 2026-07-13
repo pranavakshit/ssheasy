@@ -413,14 +413,22 @@ public class TerminalBuffer
         int copyRows = Math.Min(Rows, newRows);
         int copyCols = Math.Min(Cols, newCols);
 
+        // Copy from the bottom so we don't lose the cursor and active prompt
+        int startOldRow = Math.Max(0, Rows - newRows);
+        int startNewRow = Math.Max(0, newRows - Rows);
+
         for (int r = 0; r < copyRows; r++)
+        {
             for (int c = 0; c < copyCols; c++)
-                newScreen[r, c] = _screen[r, c];
+            {
+                newScreen[startNewRow + r, c] = _screen[startOldRow + r, c];
+            }
+        }
 
         _screen = newScreen;
         Rows = newRows;
         Cols = newCols;
-        CursorRow = Math.Min(CursorRow, newRows - 1);
+        CursorRow = Math.Clamp(CursorRow - startOldRow + startNewRow, 0, newRows - 1);
         CursorCol = Math.Min(CursorCol, newCols - 1);
         _scrollRegionTop = 0;
         _scrollRegionBottom = newRows - 1;
