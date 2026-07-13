@@ -126,7 +126,6 @@ public partial class MainWindow : Window
         
         EmptyStatePanel.Visibility = Visibility.Collapsed;
         Terminal.Visibility = Visibility.Visible;
-        TerminalInputContainer.Visibility = Visibility.Visible;
         
         UpdateStatus("Connecting...", Colors.Yellow, $"to {profile.Username}@{profile.Host}:{profile.Port}");
         
@@ -226,7 +225,6 @@ public partial class MainWindow : Window
                 
                 EmptyStatePanel.Visibility = Visibility.Visible;
                 Terminal.Visibility = Visibility.Collapsed;
-                TerminalInputContainer.Visibility = Visibility.Collapsed;
                 
                 DisconnectButton.Visibility = Visibility.Collapsed;
                 RebootButton.Visibility = Visibility.Collapsed;
@@ -298,30 +296,5 @@ public partial class MainWindow : Window
         var rdpWindow = new RdpWindow(_sshService);
         rdpWindow.Owner = this;
         rdpWindow.Show();
-    }
-
-    private void TerminalInputBox_KeyDown(object sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.Enter)
-        {
-            SendTerminalInput();
-            e.Handled = true;
-        }
-    }
-
-    private void TerminalSendButton_Click(object sender, RoutedEventArgs e)
-    {
-        SendTerminalInput();
-    }
-
-    private void SendTerminalInput()
-    {
-        if (_sshService?.IsConnected == true && !string.IsNullOrEmpty(TerminalInputBox.Text))
-        {
-            string text = TerminalInputBox.Text + "\n";
-            _sshService.SendText(text);
-            TerminalInputBox.Text = "";
-            TerminalInputBox.Focus();
-        }
     }
 }
