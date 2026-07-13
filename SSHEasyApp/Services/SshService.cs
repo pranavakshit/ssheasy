@@ -97,18 +97,12 @@ public class SshService : IDisposable
 
             _client.Connect();
 
-            var modes = new Dictionary<Renci.SshNet.Common.TerminalModes, uint>
-            {
-                { Renci.SshNet.Common.TerminalModes.ECHO, 1 }
-            };
-
             // Create interactive shell
             _shellStream = _client.CreateShellStream(
                 "xterm-256color",
                 (uint)cols, (uint)rows,
                 (uint)(cols * 10), (uint)(rows * 20),
-                4096,
-                modes);
+                4096);
 
             // Start reading output
             _readCts = new CancellationTokenSource();
